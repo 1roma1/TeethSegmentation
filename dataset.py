@@ -21,7 +21,13 @@ class TeethSegmentationDataset(Dataset):
     def __getitem__(self, index):
         img_path = os.path.join(self.image_dir, self.images[index])
         mask_path = os.path.join(self.mask_dir, self.masks[index])
-        image = Image.open(img_path).convert("RGB")
+
+        image = cv2.imread(img_path)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        clahe = cv2.createCLAHE(clipLimit=5)
+        image = clahe.apply(image)
+
+        image = Image.fromarray(image)
         mask = Image.open(mask_path).convert("L")
 
         if self.transform is not None:
