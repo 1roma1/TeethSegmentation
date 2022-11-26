@@ -4,7 +4,7 @@ from torch import optim
 from torch.utils.data import DataLoader
 from torchvision import transforms
 
-from dataset import BinarySegmentationDataset
+from dataset import TeethSegmentationDataset
 from train_bin_segmentation import train_bin_segmentation
 from model import Unet
 
@@ -18,9 +18,9 @@ IMAGE_HEIGHT = 480
 IMAGE_WIDTH = 640
 
 TRAIN_IMG_DIR = "dataset/imgs/train/"
-TRAIN_MAKS_DIR = "dataset/maxillomandibular_masks/train/"
+TRAIN_MAKS_DIR = "dataset/teeth_masks/train/"
 VAL_IMG_DIR = "dataset/imgs/val/"
-VAL_MAKS_DIR = "dataset/maxillomandibular_masks/val/"
+VAL_MAKS_DIR = "dataset/teeth_masks/val/"
 MODEL_PATH = "bin_segmentation_model.pt"
 
 
@@ -34,7 +34,7 @@ def main():
     loss_fn = nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
-    train_ds = BinarySegmentationDataset(
+    train_ds = TeethSegmentationDataset(
         image_dir=TRAIN_IMG_DIR,
         mask_dir=TRAIN_MAKS_DIR,
         transform=transform,
@@ -47,7 +47,7 @@ def main():
         shuffle=True,
     )
 
-    val_ds = BinarySegmentationDataset(
+    val_ds = TeethSegmentationDataset(
         image_dir=VAL_IMG_DIR,
         mask_dir=VAL_MAKS_DIR,
         transform=transform,
