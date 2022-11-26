@@ -3,6 +3,7 @@ from torch import nn
 from torch import optim
 from torch.utils.data import DataLoader
 from torchvision import transforms
+from torch.utils.tensorboard import SummaryWriter
 
 from dataset import TeethSegmentationDataset
 from train_bin_segmentation import train_bin_segmentation
@@ -11,7 +12,7 @@ from model import Unet
 
 LEARNING_RATE = 1e-3
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-BATCH_SIZE = 4
+BATCH_SIZE = 8
 NUM_EPOCHS = 15
 NUM_WORKERS = 2
 IMAGE_HEIGHT = 480
@@ -60,10 +61,24 @@ def main():
         shuffle=True,
     )
 
+    writer = SummaryWriter()
+
     for epoch in range(NUM_EPOCHS):
         print(f"Epoch {epoch+1}")
-        train_bin_segmentation(train_loader, val_loader, model,
-                               optimizer, loss_fn, DEVICE, MODEL_PATH)
+        train_loss, train_iou, train_acc, val_loss, val_iou, val_acc = \
+            train_bin_segmentation(train_loader, val_loader, model,
+                                   optimizer, loss_fn, DEVICE, MODEL_PATH)
+
+        writer.add_scalars('Loss',
+                           {'train_loss': train_loss, 'val_loss': val_loss},
+                           epoch+1)
+        writer.add_scalars('Intersection over union',
+                           {'train_iou': train_iou, 'val_iou': val_iou},
+                           epoch+1)
+        writer.add_scalars('Accuracy',
+                           {'train_acc': train_acc, 'val_acc': val_acc},
+                           epoch+1)
+    writer.close()
 
 
 if __name__ == "__main__":
