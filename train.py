@@ -7,7 +7,7 @@ from torch.utils.tensorboard import SummaryWriter
 
 from dataset import TeethSegmentationDataset
 from train_bin_segmentation import train_bin_segmentation
-from model import Unet
+from unet import Unet
 
 
 LEARNING_RATE = 1e-3

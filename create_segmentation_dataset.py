@@ -13,10 +13,10 @@ TEETH_BIN_MASKS_TRAIN_DIR = "dataset/teeth_masks/train/"
 TEETH_BIN_MASKS_VAL_DIR = "dataset/teeth_masks/val/"
 
 
-def train_val_split(images):
+def train_val_test_split(images):
     random.seed(42)
     random.shuffle(images)
-    train_data, val_data = images[:900], images[900:]
+    train_data, val_data = images[:800], images[800:]
     return train_data, val_data
 
 
@@ -38,7 +38,7 @@ def copy_images(images, img_src, mask_src, img_dst, mask_dst):
 if __name__ == "__main__":
     images = sorted(os.listdir(RADIOGRAPHS_DIR))
 
-    train_data, val_data = train_val_split(images)
+    train_data, val_data = train_val_test_split(images)
 
     copy_images(train_data, RADIOGRAPHS_DIR, TEETH_BIN_MASKS_DIR,
                 RADIOGRAPHS_TRAIN_DIR, TEETH_BIN_MASKS_TRAIN_DIR)
