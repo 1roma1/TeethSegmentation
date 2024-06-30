@@ -3,8 +3,9 @@ from tqdm import tqdm
 from torchmetrics.functional.classification import binary_jaccard_index
 
 
-def train_bin_segmentation(train_loader, val_loader, model,
-                           optimizer, loss_fn, device, path):
+def train_bin_segmentation(
+    train_loader, val_loader, model, optimizer, loss_fn, device, path
+):
     loop = tqdm(train_loader)
 
     train_loss = 0
@@ -37,7 +38,7 @@ def train_bin_segmentation(train_loader, val_loader, model,
         loop.set_postfix(train_loss=loss.item())
         train_loss += loss.item()
         train_iou += iou.item()
-    train_acc = train_num_correct/train_num_pixels
+    train_acc = train_num_correct / train_num_pixels
 
     val_num_correct = 0
     val_num_pixels = 0
@@ -57,7 +58,7 @@ def train_bin_segmentation(train_loader, val_loader, model,
 
             val_loss += loss.item()
             val_iou += iou.item()
-        val_acc = val_num_correct/val_num_pixels
+        val_acc = val_num_correct / val_num_pixels
 
     train_loss /= len(train_loader)
     train_iou /= len(train_loader)

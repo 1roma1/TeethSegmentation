@@ -3,7 +3,6 @@ __pycache__/
 .vscode/
 
 data/
-dataset/
 runs/
 
 *.pt

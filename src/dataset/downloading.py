@@ -5,11 +5,6 @@ import urllib.error
 import progressbar
 
 
-URL = "http://tdd.ece.tufts.edu/Tufts_Dental_Database/"
-ZIP_FILES = ("Radiographs.zip", "Segmentation.zip")
-DATA_DIR = "data/"
-
-
 class DownloadProgressBar:
     """Progress bar for track file download progress."""
 
@@ -27,21 +22,19 @@ class DownloadProgressBar:
             self.pbar.finish()
 
 
-if __name__ == "__main__":
-    os.makedirs(DATA_DIR, exist_ok=True)
+def download_files(config):
+    os.makedirs(config["path_to_raw_data"], exist_ok=True)
 
-    for zip_file in ZIP_FILES:
+    for zip_file in config["zip_files"]:
         print(f"Downloading {zip_file} ...")
         try:
             urllib.request.urlretrieve(
-                URL+zip_file,
-                zip_file,
-                DownloadProgressBar()
+                config["url"] + zip_file, zip_file, DownloadProgressBar()
             )
         except urllib.error.HTTPError as e:
             print(e)
 
         print(f"Unzip {zip_file}")
-        with zipfile.ZipFile(zip_file, 'r') as f:
-            f.extractall(DATA_DIR)
+        with zipfile.ZipFile(zip_file, "r") as f:
+            f.extractall(config["path_to_raw_data"])
         os.remove(zip_file)

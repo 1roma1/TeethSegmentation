@@ -1,0 +1,8 @@
+url: http://tdd.ece.tufts.edu/Tufts_Dental_Database/
+zip_files:
+  - Radiographs.zip
+  - Segmentation.zip
+path_to_raw_data: D:/Projects/TeethSegmentation/data/raw/
+path_to_processed_data: D:/Projects/TeethSegmentation/data/processed/
+
+seed: 3

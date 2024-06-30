@@ -26,10 +26,14 @@ MODEL_PATH = "bin_segmentation_model.pt"
 
 
 def main():
-    transform = transforms.Compose([
-        transforms.Resize(
-            (IMAGE_HEIGHT, IMAGE_WIDTH),
-            interpolation=transforms.InterpolationMode.NEAREST),])
+    transform = transforms.Compose(
+        [
+            transforms.Resize(
+                (IMAGE_HEIGHT, IMAGE_WIDTH),
+                interpolation=transforms.InterpolationMode.NEAREST,
+            ),
+        ]
+    )
 
     model = Unet(in_channels=1, out_channels=1).to(DEVICE)
     loss_fn = nn.BCEWithLogitsLoss()
@@ -64,20 +68,30 @@ def main():
     writer = SummaryWriter()
 
     for epoch in range(NUM_EPOCHS):
-        print(f"Epoch {epoch+1}")
-        train_loss, train_iou, train_acc, val_loss, val_iou, val_acc = \
-            train_bin_segmentation(train_loader, val_loader, model,
-                                   optimizer, loss_fn, DEVICE, MODEL_PATH)
+        print(f"Epoch {epoch + 1}")
+        train_loss, train_iou, train_acc, val_loss, val_iou, val_acc = (
+            train_bin_segmentation(
+                train_loader,
+                val_loader,
+                model,
+                optimizer,
+                loss_fn,
+                DEVICE,
+                MODEL_PATH,
+            )
+        )
 
-        writer.add_scalars('Loss',
-                           {'train_loss': train_loss, 'val_loss': val_loss},
-                           epoch+1)
-        writer.add_scalars('Intersection over union',
-                           {'train_iou': train_iou, 'val_iou': val_iou},
-                           epoch+1)
-        writer.add_scalars('Accuracy',
-                           {'train_acc': train_acc, 'val_acc': val_acc},
-                           epoch+1)
+        writer.add_scalars(
+            "Loss", {"train_loss": train_loss, "val_loss": val_loss}, epoch + 1
+        )
+        writer.add_scalars(
+            "Intersection over union",
+            {"train_iou": train_iou, "val_iou": val_iou},
+            epoch + 1,
+        )
+        writer.add_scalars(
+            "Accuracy", {"train_acc": train_acc, "val_acc": val_acc}, epoch + 1
+        )
     writer.close()
 
 
