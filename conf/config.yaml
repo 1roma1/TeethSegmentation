@@ -5,4 +5,15 @@ zip_files:
 path_to_raw_data: D:/Projects/TeethSegmentation/data/raw/
 path_to_processed_data: D:/Projects/TeethSegmentation/data/processed/
 
+model_path: bin_segmentation_model.pt
+
 seed: 3
+
+image_height: 480
+image_width: 640
+
+learning_rate: 0.001
+device: cuda
+batch_size: 8
+epochs: 15
+num_workers: 2
